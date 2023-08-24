@@ -1,5 +1,3 @@
-
-
 import { HardhatUserConfig } from "hardhat/config";
 
 import "@nomicfoundation/hardhat-toolbox";
@@ -7,16 +5,16 @@ import "hardhat-abi-exporter";
 import "hardhat-openzeppelin-defender";
 import "@nomiclabs/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
-import  "@openzeppelin/hardhat-upgrades";
+import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-etherscan";
-import * as dotenv from 'dotenv';
+import "hardhat-gas-reporter";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
 const config: HardhatUserConfig = {
-  
-  solidity:{
-    version:"0.8.9",
+  solidity: {
+    version: "0.8.9",
     settings: {
       optimizer: {
         enabled: true,
@@ -95,29 +93,28 @@ const config: HardhatUserConfig = {
           ? [process.env.DEPLOYER_PRIVATE_KEY_TESTNET]
           : [],
     },
-    hardhat:{
-      chainId:43113,//blockchain_1:80001,blockchain_2:43113,blockchain_3:97,blockchain_4:5,blockchain_5:420,
-      mining:{
-        auto:true,
-        interval:3000,
+    hardhat: {
+      chainId: 43113, //blockchain_1:80001,blockchain_2:43113,blockchain_3:97,blockchain_4:5,blockchain_5:420,
+      mining: {
+        auto: true,
+        interval: 3000,
       },
-      
-    }
+    },
   },
   etherscan: {
-  apiKey: {
+    apiKey: {
       mainnet: process.env.ETHERSCAN_API_KEY || "",
       //goerli: process.env.ETHERSCAN_API_KEY || "",
-      bsc: "XPWC1NGB3UAWGCMVRMU1RW9U46YMZPEH5F" ,
-      bscTestnet:"XPWC1NGB3UAWGCMVRMU1RW9U46YMZPEH5F" ,
+      bsc: "XPWC1NGB3UAWGCMVRMU1RW9U46YMZPEH5F",
+      bscTestnet: "XPWC1NGB3UAWGCMVRMU1RW9U46YMZPEH5F",
       //avalanche: process.env.AVALANCHE_API_KEY || "" ,
       //avalancheTestnet: process.env.AVALANCHE_API_KEY || "" ,
-      polygon: process.env.POLYGONSCAN_API_KEY || "" ,
-      polygonMumbai: process.env.POLYGONSCAN_API_KEY || "" ,
+      polygon: process.env.POLYGONSCAN_API_KEY || "",
+      polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
     },
   },
   abiExporter: {
-    path: './abis',
+    path: "./abis",
     runOnCompile: true,
     clear: true,
     flat: true,
@@ -128,9 +125,12 @@ const config: HardhatUserConfig = {
   },
   OpenzeppelinDefenderCredential: {
     apiKey: process.env.API_KEY || "",
-    apiSecret:process.env.API_SECRET || "",
+    apiSecret: process.env.API_SECRET || "",
   },
- 
+  gasReporter: {
+    enabled: true,
+    gasPriceApi: "https://api.bscscan.com/api?module=proxy&action=eth_gasPrice",
+  },
 };
 
 export default config;
