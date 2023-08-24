@@ -70,7 +70,7 @@ describe("StakingSoil", function () {
     });
 
     it("get Staking", async function () {
-      const StakingDate = await contract.StakingDate("1");
+      const StakingDate = await contract.StakingData("1");
       expect(Number(StakingDate["soilDeposited"])).to.equal(850);
       expect(Number(StakingDate["soilReward"])).to.equal(1700);
     });
@@ -86,12 +86,13 @@ describe("StakingSoil", function () {
     });
 
     it("creates new Staking", async function () {
+      const [owner] = await ethers.getSigners();
       await contract.createStaking(
         [
           "0xff954c6F305f6C7126060C79e6480D1B94A1C3b6",
-          "0x156DC3bD6D985CF4BED2E9a6E114Dc6fa89a077D",
+          owner.address,
         ],
-        ["150", "10000"]
+        ["10000", "150"]
       );
       const value = await contract.amountOfStakingIds();
       expect(Number(value)).to.equal(4);
@@ -111,5 +112,23 @@ describe("StakingSoil", function () {
       const stakingIds=await contract.getStakingIds("0xff954c6F305f6C7126060C79e6480D1B94A1C3b6");
       expect(stakingIds.length).to.equal(2);
     });
+
+   /*  it("claim Reward", async function () {
+      const stakingIds=await contract.claimReward("4");
+    });
+
+    it("get claimReward success", async function () {
+      const stakingIds=await contract.StakingData('4');
+      expect(stakingIds["isWithdrawn"]).to.equal(true);
+    });
+
+
+    it("balanceOf token soil reward", async function () {
+      const [owner] = await ethers.getSigners();
+      const balance=await soil.balanceOf(owner.address);
+      expect(Number(balance)).to.equal(300);
+    }); */
+
+  
   });
 });
