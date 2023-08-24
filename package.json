@@ -11,7 +11,9 @@
     "test:StakingSoil": "npx hardhat test ./test/StakingSoil.ts",
     "deployTest:Soil": "npx hardhat run --network bscTestnet scripts/Soil.ts",
     "deployTest:StakingSoil": "npx hardhat run --network bscTestnet scripts/StakingSoil.ts",
-    "deployTest": "yarn deployTest:Soil && yarn deployTest:StakingSoil"
+    "configuration": "npx hardhat run --network bscTestnet scripts/Config.ts",
+    "deployTest": "yarn deployTest:Soil && yarn deployTest:StakingSoil && yarn configuration"
+    
   },
   "author": "Danny Jesus Gonzalez Galicia",
   "license": "MIT",
