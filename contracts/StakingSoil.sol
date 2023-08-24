@@ -92,14 +92,6 @@ contract StakingSoil is
         tokenSoil.mint(address(this), amountSoil);
     }
 
-    function emergencyWithdrawal(uint _amount) public onlyRole(DEFAULT_ADMIN_ROLE){
-        Ierc20.transfer(msg.sender, _amount);
-    }
-
-    function emergencyWithdrawalBNB() public onlyRole(DEFAULT_ADMIN_ROLE){
-        Address.sendValue(payable(msg.sender), address(this).balance);
-    }
-
     function claimReward(uint _idStaking) external {
         Data storage stakingData = StakingData[_idStaking];
 
@@ -118,6 +110,15 @@ contract StakingSoil is
 
         emit StakingWithdrawn(_idStaking, msg.sender, stakingData.soilReward);
     }
+
+    function emergencyWithdrawal(uint _amount) public onlyRole(DEFAULT_ADMIN_ROLE){
+        Ierc20.transfer(msg.sender, _amount);
+    }
+
+    function emergencyWithdrawalBNB() public onlyRole(DEFAULT_ADMIN_ROLE){
+        Address.sendValue(payable(msg.sender), address(this).balance);
+    }
+
 
     function getStakingIds(address _owner) public view returns (uint[] memory) {
         return OwnerStakingIds[_owner];
