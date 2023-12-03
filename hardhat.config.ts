@@ -89,8 +89,8 @@ const config: HardhatUserConfig = {
     local: {
       url: process.env.TESTNET_RPC_URL || "",
       accounts:
-        process.env.DEPLOYER_PRIVATE_KEY_TESTNET !== undefined
-          ? [process.env.DEPLOYER_PRIVATE_KEY_TESTNET]
+        process.env.DEPLOYER_PRIVATE_KEY_LOCAL !== undefined
+          ? [process.env.DEPLOYER_PRIVATE_KEY_LOCAL]
           : [],
     },
     hardhat: {

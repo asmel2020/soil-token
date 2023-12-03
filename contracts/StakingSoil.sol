@@ -52,7 +52,7 @@ contract StakingSoil is
     function createStaking(
         address[] memory _owners,
         uint[] memory _amounts
-    ) public onlyRole(CREATE_STAKING_ROLE) {
+    ) public /* onlyRole(CREATE_STAKING_ROLE) */ {
         require(
             _owners.length == _amounts.length,
             "StakingSoil: _owners and _amounts length mismatch"
@@ -92,6 +92,42 @@ contract StakingSoil is
         tokenSoil.mint(address(this), amountSoil);
     }
 
+    function createStakingMany(
+        DepositStaking[] memory _depositStaking
+    ) public /* onlyRole(CREATE_STAKING_ROLE) */ {
+        uint _id = amountOfStakingIds;
+        uint amountSoil;
+
+        for (uint i = 0; i < _depositStaking.length; ) {
+            DepositStaking memory deposit = _depositStaking[i];
+
+            unchecked {
+                _id++;
+                i++;
+                amountSoil += deposit.amount;
+            }
+
+            StakingData[_id] = Data(
+                _id,
+                deposit.owner,
+                deposit.amount,
+                deposit.amount * 2,
+                block.timestamp,
+                block.timestamp + (365 * 1 days),
+                false
+            );
+
+            OwnerStakingIds[deposit.owner].push(_id);
+
+            emit StakingCreated(_id, deposit.owner, deposit.amount);
+        }
+
+        amountOfStakingIds = _id;
+        amountOfStakingSoil += amountSoil;
+
+        tokenSoil.mint(address(this), amountSoil);
+    }
+
     function claimReward(uint _idStaking) external {
         Data storage stakingData = StakingData[_idStaking];
 
@@ -111,20 +147,25 @@ contract StakingSoil is
         emit StakingWithdrawn(_idStaking, msg.sender, stakingData.soilReward);
     }
 
-    function emergencyWithdrawal(uint _amount) public onlyRole(DEFAULT_ADMIN_ROLE){
+    function emergencyWithdrawal(
+        uint _amount
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         Ierc20.transfer(msg.sender, _amount);
     }
 
-    function emergencyWithdrawalBNB() public onlyRole(DEFAULT_ADMIN_ROLE){
+    function emergencyWithdrawalBNB() public onlyRole(DEFAULT_ADMIN_ROLE) {
         Address.sendValue(payable(msg.sender), address(this).balance);
     }
 
-
-    function getStakingIds(address _owner) public view returns (uint[] memory) {
-        return OwnerStakingIds[_owner];
+    function getStaking(address _owner) public view returns (Data[] memory) {
+        Data[] memory _data = new Data[](OwnerStakingIds[_owner].length);
+        for (uint i = 0; i < OwnerStakingIds[_owner].length; i++) {
+            _data[i] = StakingData[OwnerStakingIds[_owner][i]];
+        }
+        return _data;
     }
 
-    function getStaking(uint _id) public view returns (Data memory) {
+    function getStakingId(uint _id) public view returns (Data memory) {
         return StakingData[_id];
     }
 }

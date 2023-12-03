@@ -4,6 +4,7 @@ pragma solidity ^0.8.9;
 interface IStakingSoil {
     event StakingCreated(uint id, address owner, uint amounts);
     event StakingWithdrawn(uint id, address owner, uint amounts);
+
     struct Data {
         uint id; // id de el staking
         address owner; // address de el staking
@@ -14,14 +15,17 @@ interface IStakingSoil {
         bool isWithdrawn; // si ya se retiro
     }
 
+    struct DepositStaking {
+        address owner; // address de el staking
+        uint amount; // cantidad de soil depositados
+    }
+
     function createStaking(
         address[] memory _owners,
         uint[] memory _amounts
     ) external;
 
-    function getStakingIds(
-        address _owner
-    ) external view returns (uint[] memory);
+    function getStaking(address _owner) external view returns (Data[] memory);
 
-    function getStaking(uint _id) external view returns (Data memory);
+    function getStakingId(uint _id) external view returns (Data memory);
 }

@@ -11,8 +11,12 @@
     "test:StakingSoil": "npx hardhat test ./test/StakingSoil.ts",
     "deployTest:Soil": "npx hardhat run --network bscTestnet scripts/Soil.ts",
     "deployTest:StakingSoil": "npx hardhat run --network bscTestnet scripts/StakingSoil.ts",
-    "configuration": "npx hardhat run --network bscTestnet scripts/Config.ts",
-    "deployTest": "yarn deployTest:Soil && yarn deployTest:StakingSoil && yarn configuration"
+    "configurationTest": "npx hardhat run --network bscTestnet scripts/Config.ts",
+    "deployTest": "yarn deployTest:Soil && yarn deployTest:StakingSoil && yarn configurationTest",
+    "deployLocal:Soil": "npx hardhat run --network local scripts/Soil.ts",
+    "deployLocal:StakingSoil": "npx hardhat run --network local scripts/StakingSoil.ts",
+    "configurationLocal": "npx hardhat run --network local scripts/Config.ts",
+    "deployLocal": "yarn deployLocal:Soil && yarn deployLocal:StakingSoil && yarn configurationLocal"
     
   },
   "author": "Danny Jesus Gonzalez Galicia",
