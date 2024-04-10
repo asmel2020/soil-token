@@ -20,10 +20,7 @@ interface IStakingSoil {
         uint amount; // cantidad de soil depositados
     }
 
-    function createStaking(
-        address[] memory _owners,
-        uint[] memory _amounts
-    ) external;
+    function createStaking(DepositStaking[] memory _depositStaking) external;
 
     function getStaking(address _owner) external view returns (Data[] memory);
 

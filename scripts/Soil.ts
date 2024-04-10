@@ -1,49 +1,42 @@
-/** 
- * 
+/**
+ *
  *  MyToken smart contract deployment and add to openzeppelin admin module
- * 
+ *
  **/
 
-import { ethers, run} from "hardhat";
-import fs from 'fs';
-import {sleep} from 'sleep';
+import { ethers, run } from "hardhat";
+import fs from "fs";
+import sleep from "../utils/sleep";
+
 async function main() {
-  const contractName='Soil'
+  const contractName = "Soil";
 
-  const Contract = await ethers.getContractFactory(contractName);
+  const Contract = await ethers.deployContract(contractName);
+  const contract = await Contract.waitForDeployment();
 
-  const contract = await Contract.deploy();
+  console.log(`${contractName} contract deploy address: `, contract.target);
 
-  const d=await contract.deployed();
-  
-  console.log(`${contractName} contract deploy address: `,contract.address);
+  const token = {
+    soil: {
+      address: contract.target,
+    },
+  };
+  await sleep(2000);
+  fs.writeFileSync("parameter.json", JSON.stringify(token, null, 2));
 
-  const token ={
-    soil:{
-      address: contract.address,
-    }
-  }
+  console.log(`${contractName} : start Verify address: `, contract.target);
 
-  fs.writeFileSync('parameter.json', JSON.stringify(token, null, 2));
-
-  console.log(`${contractName} : start Verify address: `,contract.address);
-  
-  sleep(30);
- 
   try {
     await run("verify:verify", {
-      address: contract.address,
-      constructorArguments: [
-      ],
+      address: contract.target,
+      constructorArguments: [],
     });
   } catch (error) {
-    console.log(`${contractName} : Error Verify address: `,contract.address);
+    console.log(`${contractName} : Error Verify address: `, contract.target);
   }
- 
 }
 
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
-

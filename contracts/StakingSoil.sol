@@ -16,8 +16,7 @@ contract StakingSoil is
     IStakingSoil
 {
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
-    bytes32 public constant CREATE_STAKING_ROLE =
-        keccak256("CREATE_STAKING_ROLE");
+    bytes32 public constant CREATE_STAKING_ROLE = keccak256("CREATE_STAKING_ROLE");
 
     mapping(uint => Data) public StakingData; // id => date
     mapping(address => uint[]) public OwnerStakingIds; // address => id[]
@@ -28,6 +27,8 @@ contract StakingSoil is
     ISoil public tokenSoil;
     IERC20 public Ierc20;
 
+
+    address public walletProyect;
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -43,6 +44,7 @@ contract StakingSoil is
 
         tokenSoil = ISoil(_tokenSoil);
         Ierc20 = IERC20(_tokenSoil);
+        walletProyect = 0xc62F81fc1929817448119B429464df50C31de4ea;
     }
 
     function _authorizeUpgrade(
@@ -50,51 +52,8 @@ contract StakingSoil is
     ) internal override onlyRole(UPGRADER_ROLE) {}
 
     function createStaking(
-        address[] memory _owners,
-        uint[] memory _amounts
-    ) public /* onlyRole(CREATE_STAKING_ROLE) */ {
-        require(
-            _owners.length == _amounts.length,
-            "StakingSoil: _owners and _amounts length mismatch"
-        );
-
-        uint _id = amountOfStakingIds;
-        uint amountSoil;
-
-        for (uint i = 0; i < _owners.length; ) {
-            uint amount = _amounts[i];
-            address owners = _owners[i];
-
-            unchecked {
-                _id++;
-                i++;
-                amountSoil += amount;
-            }
-
-            StakingData[_id] = Data(
-                _id,
-                owners,
-                amount,
-                amount * 2,
-                block.timestamp,
-                block.timestamp + (365 * 1 days),
-                false
-            );
-
-            OwnerStakingIds[owners].push(_id);
-
-            emit StakingCreated(_id, owners, amount);
-        }
-
-        amountOfStakingIds = _id;
-        amountOfStakingSoil += amountSoil;
-
-        tokenSoil.mint(address(this), amountSoil);
-    }
-
-    function createStakingMany(
         DepositStaking[] memory _depositStaking
-    ) public /* onlyRole(CREATE_STAKING_ROLE) */ {
+    ) public onlyRole(CREATE_STAKING_ROLE) {
         uint _id = amountOfStakingIds;
         uint amountSoil;
 
@@ -151,6 +110,11 @@ contract StakingSoil is
         uint _amount
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         Ierc20.transfer(msg.sender, _amount);
+    }
+
+    
+    function mintSoilWalletProyect(uint _amount) external onlyRole(CREATE_STAKING_ROLE){
+        tokenSoil.mint(walletProyect, _amount);
     }
 
     function emergencyWithdrawalBNB() public onlyRole(DEFAULT_ADMIN_ROLE) {

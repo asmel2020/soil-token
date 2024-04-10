@@ -4,30 +4,30 @@ import { Soil, StakingSoil } from "../typechain-types";
 import { expect } from "chai";
 
 let contract: Contract;
-let soil: Contract;
+let soil:Contract;
 
 describe("StakingSoil", function () {
   async function deploySoil() {
     const contractName = "Soil";
-    const Contract = await ethers.getContractFactory(contractName);
-    const contract = await Contract.deploy();
-    return contract.deployed();
+    const Contract = await ethers.deployContract(contractName);
+    return Contract.waitForDeployment();
   }
 
   async function deployStaking(tokenSoil: string) {
     const contractName = "StakingSoil";
     const Contract = await ethers.getContractFactory(contractName);
-    const contract = await upgrades.deployProxy(Contract, [tokenSoil], {
+    const contract = await upgrades.deployProxy((Contract as any), [tokenSoil], {
       kind: "uups",
     });
-    return await contract.deployed();
+
+    return contract.waitForDeployment();
   }
 
   describe("deploy", function () {
     it("deploy", async function () {
-      soil = (await deploySoil()) as Soil;
-      contract = (await deployStaking(soil.address)) as StakingSoil;
-      await soil.grantRole(soil.MINTER_ROLE(), contract.address);
+      soil = await deploySoil();
+      contract = await deployStaking(soil.target.toString());
+      await soil.grantRole(soil.MINTER_ROLE(), contract.target);
     });
 
     it("init token soil supply", async function () {
@@ -54,28 +54,20 @@ describe("StakingSoil", function () {
       expect(Number(value)).to.equal(0);
     });
 
-    it("creates new Staking", async function () {
-      await contract.createStaking(
-        [
-          "0xff954c6F305f6C7126060C79e6480D1B94A1C3b6",
-          "0x156DC3bD6D985CF4BED2E9a6E114Dc6fa89a077D",
-        ],
-        ["850", "500"]
-      );
-      const value = await contract.amountOfStakingIds();
-      expect(Number(value)).to.equal(2);
-    });
-
-    it("creates new createStakingMany", async function () {
-      await contract.createStakingMany([
+    it("creates new createStaking", async function () {
+      await contract.createStaking([
         {
           owner: "0xff954c6F305f6C7126060C79e6480D1B94A1C3b6",
-          amount: "1000",
+          amount: "850",
         },
-      ]);  console.log('value');
+        {
+          owner: "0x156DC3bD6D985CF4BED2E9a6E114Dc6fa89a077D",
+          amount: "500",
+        },
+      ]);
       const value = await contract.amountOfStakingIds();
-      console.log(value);
-      expect(Number(value)).to.equal(3);
+
+      expect(Number(value)).to.equal(2);
     });
 
     it("get Staking", async function () {
@@ -96,10 +88,18 @@ describe("StakingSoil", function () {
 
     it("creates new Staking", async function () {
       const [owner] = await ethers.getSigners();
-      await contract.createStaking(
-        ["0xff954c6F305f6C7126060C79e6480D1B94A1C3b6", owner.address],
-        ["10000", "150"]
-      );
+
+      await contract.createStaking([
+        {
+          owner: "0xff954c6F305f6C7126060C79e6480D1B94A1C3b6",
+          amount: "10000",
+        },
+        {
+          owner: owner.address,
+          amount: "150",
+        },
+      ]);
+  
       const value = await contract.amountOfStakingIds();
       expect(Number(value)).to.equal(4);
     });
@@ -110,7 +110,7 @@ describe("StakingSoil", function () {
     });
 
     it("get token amount contract Staking", async function () {
-      const supply = await soil.balanceOf(contract.address);
+      const supply = await soil.balanceOf(contract.target);
       expect(Number(supply)).to.equal(11500);
     });
 

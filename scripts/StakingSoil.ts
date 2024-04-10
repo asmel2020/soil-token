@@ -6,7 +6,7 @@
 
 import { ethers, run, upgrades } from "hardhat";
 import fs from "fs";
-import { sleep } from "sleep";
+import sleep from "../utils/sleep";
 
 async function main() {
   const result = fs.readFileSync("parameter.json", "utf8");
@@ -17,32 +17,29 @@ async function main() {
 
   const Contract = await ethers.getContractFactory(contractName);
   const contract = await upgrades.deployProxy(
-    Contract,
+    Contract as any,
     [parameter.soil.address],
     { kind: "uups" }
   );
- 
-  parameter["stakingSoil"] = {
-    address: contract.address,
-  };
- 
-  await contract.deployed();
 
-  console.log(`${contractName} contract deploy address: `, contract.address);
+  await contract.waitForDeployment();
+  await sleep(2000);
+  parameter["stakingSoil"] = {
+    address: contract.target,
+  };
+
+  console.log(`${contractName} contract deploy address: `, contract.target);
 
   fs.writeFileSync("parameter.json", JSON.stringify(parameter, null, 2));
 
-  console.log(`${contractName} : start Verify address: `,contract.address);
-  
-  sleep(30);
+  console.log(`${contractName} : start Verify address: `, contract.target);
 
   try {
     await run("verify:verify", {
-      address: contract.address,
-
+      address: contract.target,
     });
   } catch (error) {
-    console.log(`${contractName} : Error Verify address: `,contract.address);
+    console.log(`${contractName} : Error Verify address: `, contract.target);
   }
 }
 

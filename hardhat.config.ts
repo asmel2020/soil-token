@@ -14,7 +14,7 @@ dotenv.config();
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.9",
+    version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
@@ -52,7 +52,7 @@ const config: HardhatUserConfig = {
           : [],
     },
     bscTestnet: {
-      url: process.env.BSC_TESTNET_RPC_URL || "",
+      url: /* process.env.BSC_TESTNET_RPC_URL || */ "https://bsc-testnet.publicnode.com",
       accounts:
         process.env.DEPLOYER_PRIVATE_KEY_TESTNET !== undefined
           ? [process.env.DEPLOYER_PRIVATE_KEY_TESTNET]
@@ -130,6 +130,7 @@ const config: HardhatUserConfig = {
   gasReporter: {
     enabled: true,
     gasPriceApi: "https://api.bscscan.com/api?module=proxy&action=eth_gasPrice",
+    currency: "USD",
   },
 };
 

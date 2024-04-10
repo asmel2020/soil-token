@@ -9,15 +9,15 @@
     "typechain": "npx hardhat typechain",
     "deploy:local": "npx hardhat run --network local scripts/HelloWorld.ts",
     "test:StakingSoil": "npx hardhat test ./test/StakingSoil.ts",
-    "deployTest:Soil": "npx hardhat run --network bscTestnet scripts/Soil.ts",
-    "deployTest:StakingSoil": "npx hardhat run --network bscTestnet scripts/StakingSoil.ts",
-    "configurationTest": "npx hardhat run --network bscTestnet scripts/Config.ts",
-    "deployTest": "yarn deployTest:Soil && yarn deployTest:StakingSoil && yarn configurationTest",
+    "GenerateWallet": "npx hardhat run scripts/GenerateWallet.ts",
     "deployLocal:Soil": "npx hardhat run --network local scripts/Soil.ts",
     "deployLocal:StakingSoil": "npx hardhat run --network local scripts/StakingSoil.ts",
     "configurationLocal": "npx hardhat run --network local scripts/Config.ts",
-    "deployLocal": "yarn deployLocal:Soil && yarn deployLocal:StakingSoil && yarn configurationLocal"
-    
+    "deployLocal": "yarn deployLocal:Soil && yarn deployLocal:StakingSoil && yarn configurationLocal",
+    "deploy:Soil": "npx hardhat run --network bsc scripts/Soil.ts",
+    "deploy:StakingSoil": "npx hardhat run --network bscTestnet scripts/StakingSoil.ts",
+    "configuration": "npx hardhat run --network bscTestnet scripts/Config.ts",
+    "deploy": "yarn deploy:Soil && yarn deploy:StakingSoil && yarn configuration"
   },
   "author": "Danny Jesus Gonzalez Galicia",
   "license": "MIT",
@@ -25,19 +25,19 @@
     "@ethersproject/abi": "^5.6.4",
     "@ethersproject/providers": "^5.6.8",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.2",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.3",
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@nomicfoundation/hardhat-verify": "^1.1.1",
     "@nomiclabs/hardhat-ethers": "^2.1.0",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
-    "@openzeppelin/hardhat-upgrades": "^1.19.1",
+    "@openzeppelin/hardhat-upgrades": "^2.4.3",
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/hardhat": "^6.1.2",
     "@types/mocha": "^9.1.1",
-    "@types/sleep": "^0.0.9",
-    "chai": "^4.3.6",
-    "ethers": "^5.6.9",
-    "hardhat": "^2.10.1",
+    "chai": "^4.3.10",
+    "ethers": "^6.9.0",
+    "hardhat": "^2.19.1",
     "hardhat-abi-exporter": "^2.10.0",
     "hardhat-gas-reporter": "^1.0.9",
     "hardhat-openzeppelin-defender": "^1.2.3",
@@ -49,9 +49,8 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.2",
-    "@openzeppelin/contracts-upgradeable": "^4.7.2",
-    "dotenv": "^16.0.1",
-    "sleep": "^6.3.0"
+    "@openzeppelin/contracts": "^5.0.0",
+    "@openzeppelin/contracts-upgradeable": "^5.0.0",
+    "dotenv": "^16.0.1"
   }
 }
