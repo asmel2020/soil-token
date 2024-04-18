@@ -39,7 +39,7 @@
     "ethers": "^6.9.0",
     "hardhat": "^2.19.1",
     "hardhat-abi-exporter": "^2.10.0",
-    "hardhat-gas-reporter": "^1.0.9",
+    "hardhat-gas-reporter": "^2.1.1",
     "hardhat-openzeppelin-defender": "^1.2.3",
     "i": "^0.3.7",
     "npm": "^8.15.1",

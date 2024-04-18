@@ -128,9 +128,11 @@ const config: HardhatUserConfig = {
     apiSecret: process.env.API_SECRET || "",
   },
   gasReporter: {
-    enabled: true,
-    gasPriceApi: "https://api.bscscan.com/api?module=proxy&action=eth_gasPrice",
     currency: "USD",
+    enabled: true,
+    coinmarketcap:"34111718-4929-4780-9fdd-0e345e21dffd",
+    L1: "binance",
+    gasPrice:5
   },
 };
 
