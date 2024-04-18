@@ -61,6 +61,13 @@ $ yarn test
 
 ## Deploy
 
+para realizar el deploy en binance smartChain testnet
+```
+$ yarn deploy:soil --network bscTestnet
+```
+
+para realizar el deploy en binance smartChain
+
 ```
 $ yarn deploy:soil --network bsc
 ```

@@ -52,7 +52,7 @@ const config: HardhatUserConfig = {
           : [],
     },
     bscTestnet: {
-      url: /* process.env.BSC_TESTNET_RPC_URL || */ "https://bsc-testnet.publicnode.com",
+      url: process.env.BSC_TESTNET_RPC_URL || "",
       accounts:
         process.env.DEPLOYER_PRIVATE_KEY_TESTNET !== undefined
           ? [process.env.DEPLOYER_PRIVATE_KEY_TESTNET]
