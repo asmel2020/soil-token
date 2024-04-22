@@ -8,7 +8,12 @@
     "coverage": "npx hardhat coverage",
     "typechain": "npx hardhat typechain",
     "deployLocal:soil": "npx hardhat run --network local scripts/Soil.ts",
-    "deploy:soil": "npx hardhat run scripts/Soil.ts"
+    "deployLocal:dispenser": "npx hardhat run --network local scripts/Dispenser.ts",
+    "deployLocal": "npm run deployLocal:soil && npm run deployLocal:dispenser",
+    "soil:mint": "npx hardhat run --network local scripts/MintSoil.ts",
+    "deploy:soil": "npx hardhat run scripts/Soil.ts",
+    "deploy:dispenser": "npx hardhat run scripts/Dispenser.ts",
+    "deploy": "npm run deploy:soil && npm run deploy:dispenser"
   },
   "author": "Danny Jesus Gonzalez Galicia",
   "license": "MIT",

@@ -9,7 +9,7 @@ let owner: any;
 let user: any;
 
 let userTwo: any;
-describe("StakingSoil", function () {
+describe("Soil", function () {
 
   async function deploySoil() {
     const contractName = "Soil";
