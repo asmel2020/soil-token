@@ -9,7 +9,7 @@ import sleep from "../utils/sleep";
 import * as fs from "fs";
 
 async function main() {
-  const contractName = "Soil";
+  const contractName = "SoilT";
   const Contract = await ethers.deployContract(contractName);
   const contract = await Contract.waitForDeployment();
 

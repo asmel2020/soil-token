@@ -10,9 +10,9 @@
     "deployLocal:soil": "npx hardhat run --network local scripts/Soil.ts",
     "deployLocal:dispenser": "npx hardhat run --network local scripts/Dispenser.ts",
     "deployLocal": "npm run deployLocal:soil && npm run deployLocal:dispenser",
-    "soil:mint": "npx hardhat run --network local scripts/MintSoil.ts",
-    "deploy:soil": "npx hardhat run scripts/Soil.ts",
-    "deploy:dispenser": "npx hardhat run scripts/Dispenser.ts",
+    "soil:mint": "npx hardhat run --network local scripts/MintSoilT.ts",
+    "deploy:soilT": "npx hardhat run --network bsc scripts/SoilT.ts",
+    "deploy:dispenser": "npx hardhat run --network bscTestnet scripts/Dispenser.ts",
     "deploy": "npm run deploy:soil && npm run deploy:dispenser"
   },
   "author": "Danny Jesus Gonzalez Galicia",
