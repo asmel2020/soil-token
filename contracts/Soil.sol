@@ -4,8 +4,8 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./interfaces/ISoilT.sol";
+
 contract SoilT is ERC20, AccessControl, ISoilT {
-    
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant BURN_ROLE = keccak256("BURN_ROLE");
 
@@ -24,25 +24,14 @@ contract SoilT is ERC20, AccessControl, ISoilT {
     }
 
     function mintBatch(
-        address[] calldata accounts,
-        uint256[] calldata values
+        MintBatchPrams[] calldata mintBatchPrams
     ) public onlyRole(MINTER_ROLE) {
-        uint256 accountsLength = accounts.length;
-        uint256 valuesLength = values.length;
-
-        require(accountsLength >= 1, "SoilT::accounts cannot be empty");
-        require(valuesLength >= 1, "SoilT::values cannot be empty");
+        uint256 accountsLength = mintBatchPrams.length;
 
         require(accountsLength <= 1000, "SoilT::limit exceeded");
-        require(valuesLength <= 1000, "SoilT::limit exceeded");
 
-        require(
-            accountsLength == valuesLength,
-            "SoilT::the amount of data is not equal"
-        );
-
-        for (uint256 i = 0; i < accountsLength;) {
-            _mint(accounts[i], values[i]);
+        for (uint256 i = 0; i < accountsLength; ) {
+            _mint(mintBatchPrams[i].accounts, mintBatchPrams[i].values);
 
             unchecked {
                 i++;

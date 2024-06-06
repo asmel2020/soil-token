@@ -11,7 +11,7 @@
     "deployLocal:dispenser": "npx hardhat run --network local scripts/Dispenser.ts",
     "deployLocal": "npm run deployLocal:soil && npm run deployLocal:dispenser",
     "soil:mint": "npx hardhat run --network local scripts/MintSoilT.ts",
-    "deploy:soilT": "npx hardhat run --network bsc scripts/SoilT.ts",
+    "deploy:soilT": "npx hardhat run --network bscTestnet scripts/SoilT.ts",
     "deploy:dispenser": "npx hardhat run --network bscTestnet scripts/Dispenser.ts",
     "deploy": "npm run deploy:soil && npm run deploy:dispenser"
   },

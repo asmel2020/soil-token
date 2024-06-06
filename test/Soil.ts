@@ -9,10 +9,9 @@ let owner: any;
 let user: any;
 
 let userTwo: any;
-describe("Soil", function () {
-
+describe("SoilT", function () {
   async function deploySoil() {
-    const contractName = "Soil";
+    const contractName = "SoilT";
     const Contract = await ethers.deployContract(contractName);
     return Contract.waitForDeployment();
   }
@@ -38,16 +37,19 @@ describe("Soil", function () {
     });
 
     it("mint Batch soil", async function () {
-      const address = [];
-      const value = [];
+      const mintBatchPrams: {
+        accounts: string;
+        values: string;
+      }[] = [];
 
       for (let index = 0; index < 1000; index++) {
-        address.push(userTwo.address);
-        value.push("5000000000000000000");
+        mintBatchPrams.push({
+          accounts: userTwo.address,
+          values: "5000000000000000000",
+        });
       }
 
-      await soil.mintBatch(address, value);
+      await soil.mintBatch(mintBatchPrams);
     });
   });
-  
 });
