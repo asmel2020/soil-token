@@ -8,6 +8,7 @@ import "@nomicfoundation/hardhat-chai-matchers";
 import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-etherscan";
 import "hardhat-gas-reporter";
+/* import "@nomicfoundation/hardhat-verify"; */
 import * as dotenv from "dotenv";
 
 dotenv.config();

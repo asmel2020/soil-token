@@ -35,6 +35,7 @@ async function main() {
     });
   } catch (error) {
     console.log(`${contractName} : Error Verify address: `, contract.target);
+    console.log(error)
   }
 
   return
